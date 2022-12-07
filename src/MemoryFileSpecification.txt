@@ -1,0 +1,38 @@
+There are two Modes, declared by the first Value in the document, the second value will specify the number type used throughout the whole document.
+Number types:
+1. Number type "0x"
+    Numbers in hexadecimal, leading zeros be omitted.
+2. Number type "0d"
+    Numbers in decimal, leading zeros be omitted.
+3. Number type "0b"
+    Numbers in binary, leading zeros be omitted.
+
+Modes:
+1. Mode "FULL"
+    The document must consist of up to 2^20 lines with the values at the given memory address, starting at address 0.
+    value must be a number of the specified type < 2^24 - 1.
+    Missing lines will be interpreted as "0"^20.
+    Example file:
+    <Document start>
+    FULL,0d
+    101010101010101010101010
+    010101010101010101010101
+    <Document end>
+
+    This will result the loaded memory to have the value "101010101010101010101010" at address 0b0 and the value "010101010101010101010101" at address 0b1.
+    The rest of the memory will be filled with 0s.
+
+2. Mode "PARTIAL"
+    The document must consist of up to 2^20 lines with a memory address, and the value at this given memory address.
+    value must be a number of the specified type < 2^24 - 1.
+    address must be a number of the specified type < 2^20 - 1.
+    All memory cells not specified will be set to "0"^20.
+    Example file:
+    <Document start>
+    PARTIAL,0d
+    101010101010101010101010,00000000000000000011
+    010101010101010101010101,00000000000000000010
+    <Document start>
+
+    This will result the loaded memory to have the value "101010101010101010101010" at address 0b11 and the value "010101010101010101010101" at address 0b10.
+    The rest of the memory will be filled with 0s.

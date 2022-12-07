@@ -1,3 +1,9 @@
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
 /**
  * Class to represent the memory of MIMA,
  * a basic representation of a computer with von Neumann architecture, invented at KIT.
@@ -7,6 +13,29 @@
 public class MimaMemory {
 
     private final int[] memory = new int[1048576];
+
+    /**
+     * Loads the MIMA memory from the file at path,
+     * following the specification in MemoryFileSpecification.txt.
+     * @param path Relative path of the file.
+     * @return The constructed Memory.
+     * @throws FileNotFoundException if the specified file does not exist.
+     * @throws CSVFormatException if the fine is not correctly formatted.
+     */
+    public static MimaMemory loadMemoryFromFile(String path) throws FileNotFoundException, CSVFormatException {
+        Scanner scanner = new Scanner(new File(path));
+        ArrayList<ArrayList<String>> rows = new ArrayList<ArrayList<String>>();
+        while (scanner.hasNext()) {
+            String row = scanner.nextLine();
+            ArrayList<String> rowList = new ArrayList<String>(List.of(row.split(",")));
+            if(rowList.size() > 2) {
+                throw new CSVFormatException();
+            }
+            rows.add(rowList);
+        }
+        System.out.println(rows);
+        return new MimaMemory(); // TODO: 07.12.2022
+    }
 
     /**
      * Function to set the memory cell at address to value
